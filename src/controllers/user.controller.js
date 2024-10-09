@@ -1,7 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+//import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 const registerUser = asyncHandler(async (req, res) => {
   //todo      get user details from frontend
@@ -18,6 +18,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const { fullname, email, username, password } = req.body;
 
   console.log("Email: ", email);
+  console.log("F_N: ", fullname);
+
 
   //    if(fullname===""){
   //     throw new ApiError(400,"")
@@ -31,7 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(403, "All Fields Are Required");
   }
 
-  const existedUser = User.findOne({
+  const existedUser = await User.findOne({
     $or: [{ username }, { email }],
   });
 
@@ -40,37 +42,42 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   //! multer hame  req k sath files ki option deta ha
-  const avatarLocalPath = req.files?.avatar[0]?.path; //path k liye
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  // const avatarLocalPath = req.files?.avatar[0]?.path; //path k liye
+  // const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-  if (!avatarLocalPath) {
-    throw new ApiError(493, "Avatar Not Found");
-  }
+  // if (!avatarLocalPath) {
+  //   throw new ApiError(493, "Avatar Not Found");
+  // }
 
-  //! now upload on cloudinary
+  // //! now upload on cloudinary
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
-  const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+  // const avatar = await uploadOnCloudinary(avatarLocalPath);
+  // const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
+
+
+  const avatar= "C:\Users\Raja\Postman\files\my.png"
+  const coverImage="C:\Users\Raja\Postman\files\my.png"
+  
   // User.create({
   //   f
   // })
   await User.create({
     fullname,
-    avatar: avatar.url,
-    coverImage: coverImage?.url || "",
+    avatar: avatar,
+    coverImage: coverImage,
     email,
     password,
     username: username.toLowerCase(),
   });
 
-  const createdUser = await User.findById(user._id).select(
+  const createdUser = await User.findById(username).select(
     "-password -refreshToken"
   );
 
   if (!createdUser) {
     throw new ApiError(432, "User Not Created");
-    // res.status(200).json({
+    // res.status(200).son({
     //     message:"ok"
     // })
   }

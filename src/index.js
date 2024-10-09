@@ -14,8 +14,8 @@ app.get("/",(req,res)=>{
 res.send("Hello")
 })
 
-app.listen(4000,()=>{
-console.log("this app is running on port : 4000");
+app.listen(process.env.PORT,()=>{
+console.log("this app is running on port :", process.env.PORT);
 
 })
 

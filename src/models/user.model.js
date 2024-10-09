@@ -20,7 +20,7 @@ const userSchema = new Schema(
     },
     fullName: {
       type: String,
-      required: true,
+      //required: true,
       trim: true,
     },
     avatar: {
@@ -36,7 +36,8 @@ const userSchema = new Schema(
     },
     refreshToken: {
       type: String,
-      required: true,
+      required: false,
+
     },
     watchHistory: [
       {
