@@ -78,7 +78,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!createdUser) {
     throw new ApiError(432, "User Not Created");
     // res.status(200).son({
-    //     message:"ok"
+    //     messadge:"ok"
     // })
   }
 
